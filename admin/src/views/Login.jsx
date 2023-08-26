@@ -1,13 +1,42 @@
 import {NavLink} from "react-router-dom";
+import {useStateContext} from "./contexts/ContextProvider.jsx";
+import {useRef} from "react";
+import axiosClient from "../axios.js";
 
 export default function Login() {
+    const { setUser, setToken } = useStateContext()
+
+    const emailRef = useRef()
+    const passwordRef = useRef()
+
+    const onSubmit = (ev) => {
+        ev.preventDefault()
+
+        const payload = {
+            email: emailRef.current.value,
+            password: passwordRef.current.value
+        }
+
+        axiosClient.post('/login', payload)
+            .then(({data}) => {
+                setUser(data.user)
+                setToken(data.token)
+            })
+            .catch((error) => {
+                const response = error.response
+
+                if (response && response.status === 422) {
+                    response.data.errors
+                }
+            })
+    }
     return (
         <>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Sign in to your account
                 </h2>
-                <form className="space-y-6 mt-10" action="#" method="POST">
+                <form onSubmit={onSubmit} className="space-y-6 mt-10" action="#" method="POST">
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                             Email address
@@ -19,6 +48,8 @@ export default function Login() {
                                 type="email"
                                 autoComplete="email"
                                 required
+                                ref={emailRef}
+                                placeholder="joe@shields.com"
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
@@ -42,6 +73,8 @@ export default function Login() {
                                 type="password"
                                 autoComplete="current-password"
                                 required
+                                placeholder="********"
+                                ref={passwordRef}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
