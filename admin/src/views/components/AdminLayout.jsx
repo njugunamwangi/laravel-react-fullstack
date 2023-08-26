@@ -11,7 +11,6 @@ const navigation = [
 const userNavigation = [
     { name: 'Your Profile', to: '/profile' },
     { name: 'Settings', to: '/settings' },
-    { name: 'Sign out', to: '#' },
 ]
 
 function classNames(...classes) {
@@ -20,6 +19,11 @@ function classNames(...classes) {
 
 export default function AdminLayout() {
     const { user, token } = useStateContext()
+
+    const onSignOut = (ev) => {
+        ev.preventDefault()
+        console.log("logout clicked")
+    }
 
     if (!token) {
         return <Navigate to="/login" />
@@ -92,19 +96,28 @@ export default function AdminLayout() {
                                                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         {userNavigation.map((item) => (
                                                             <Menu.Item key={item.name}>
-                                                                {({ active }) => (
                                                                     <NavLink
                                                                         to={item.to}
-                                                                        className={classNames(
-                                                                            active ? 'bg-gray-100' : '',
+                                                                        className={({ isActive }) => classNames(
+                                                                            isActive ? 'bg-gray-800 text-gray-50' : 'hover:bg-gray-500 hover:text-white',
                                                                             'block px-4 py-2 text-sm text-gray-700'
                                                                         )}
                                                                     >
                                                                         {item.name}
                                                                     </NavLink>
-                                                                )}
                                                             </Menu.Item>
                                                         ))}
+                                                        <Menu.Item>
+                                                            <a
+                                                                href="#"
+                                                                onClick={(ev) => onSignOut(ev)}
+                                                                className={classNames(
+                                                                    'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-500 hover:text-white'
+                                                                )}
+                                                            >
+                                                                Sign Out
+                                                            </a>
+                                                        </Menu.Item>
                                                     </Menu.Items>
                                                 </Transition>
                                             </Menu>
@@ -128,18 +141,16 @@ export default function AdminLayout() {
                             <Disclosure.Panel className="md:hidden">
                                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                                     {navigation.map((item) => (
-                                        <Disclosure.Button
+                                        <NavLink
                                             key={item.name}
-                                            as="a"
-                                            href={item.href}
-                                            className={classNames(
-                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                            to={item.to}
+                                            className={({ isActive }) => classNames(
+                                                isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                 'block rounded-md px-3 py-2 text-base font-medium'
                                             )}
-                                            aria-current={item.current ? 'page' : undefined}
                                         >
                                             {item.name}
-                                        </Disclosure.Button>
+                                        </NavLink>
                                     ))}
                                 </div>
                                 <div className="border-t border-gray-700 pb-3 pt-4">
@@ -162,15 +173,25 @@ export default function AdminLayout() {
                                     </div>
                                     <div className="mt-3 space-y-1 px-2">
                                         {userNavigation.map((item) => (
-                                            <Disclosure.Button
+                                            <NavLink
                                                 key={item.name}
-                                                as="a"
-                                                href={item.href}
-                                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                                                to={item.to}
+                                                className={({ isActive }) => classNames(
+                                                    isActive ? 'bg-gray-700 text-white' : 'hover:bg-gray-700',
+                                                    'block px-4 py-2 text-sm text-white'
+                                                )}
                                             >
                                                 {item.name}
-                                            </Disclosure.Button>
+                                            </NavLink>
                                         ))}
+                                        <a
+                                            as="a"
+                                            href="#"
+                                            className="block px-4 py-2 text-sm text-white hover:bg-gray-700 hover:text-white"
+                                            onClick={(ev) => onSignOut(ev)}
+                                        >
+                                            Sign Out
+                                        </a>
                                     </div>
                                 </div>
                             </Disclosure.Panel>
