@@ -1,6 +1,6 @@
 import {Navigate, NavLink, Outlet} from "react-router-dom";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
-import { Fragment } from 'react'
+import {Fragment, useEffect} from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import axiosClient from "../../axios.js";
@@ -30,6 +30,13 @@ export default function AdminLayout() {
                 setToken(null)
             })
     }
+
+    useEffect(() => {
+        axiosClient.get('/me')
+            .then(({ data }) => {
+                setUser(data)
+        })
+    }, [])
 
     if (!token) {
         return <Navigate to="/login" />
