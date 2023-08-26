@@ -1,13 +1,46 @@
 import {NavLink} from "react-router-dom";
+import {useRef} from "react";
+import axiosClient from "../axios.js";
+import {useStateContext} from "./contexts/ContextProvider.jsx";
 
 export default function Signup() {
+    const nameRef = useRef()
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const passwordConfirmationRef = useRef()
+
+    const { setUser, setToken } = useStateContext()
+    const onSubmit = (ev) => {
+        ev.preventDefault()
+
+        const payload = {
+            name: nameRef.current.value,
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+            password_confirmation: passwordConfirmationRef.current.value,
+        }
+
+        axiosClient.post('/signup', payload)
+            .then(({data}) => {
+                setUser(data.user)
+                setToken(data.token)
+            })
+            .catch((error) => {
+                const response = error.response
+
+                if (response && response.status === 422) {
+                    response.data.errors
+                }
+            })
+    }
+
     return (
         <>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Sign up for an account
                 </h2>
-                <form className="space-y-6 mt-10" action="#" method="POST">
+                <form onSubmit={onSubmit} className="space-y-6 mt-10" action="#" method="POST">
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                             Full Name
@@ -19,6 +52,8 @@ export default function Signup() {
                                 type="text"
                                 autoComplete="name"
                                 required
+                                placeholder="Joe Shields"
+                                ref={nameRef}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
@@ -35,6 +70,8 @@ export default function Signup() {
                                 type="email"
                                 autoComplete="email"
                                 required
+                                placeholder="joe@shields.com"
+                                ref={emailRef}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
@@ -53,6 +90,8 @@ export default function Signup() {
                                 type="password"
                                 autoComplete="current-password"
                                 required
+                                placeholder="********"
+                                ref={passwordRef}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
@@ -71,6 +110,8 @@ export default function Signup() {
                                 type="password"
                                 autoComplete="current-password"
                                 required
+                                placeholder="********"
+                                ref={passwordConfirmationRef}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
