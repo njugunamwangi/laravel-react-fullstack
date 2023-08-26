@@ -1,7 +1,11 @@
+import AdminComponent from "./components/AdminComponent.jsx";
+
 export default function Dashboard() {
     return (
         <>
-            Dashboard
+            <AdminComponent title="Dashboard" >
+                Dashboard
+            </AdminComponent>
         </>
     )
 }
