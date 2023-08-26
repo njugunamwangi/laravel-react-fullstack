@@ -3,6 +3,7 @@ import {useStateContext} from "../contexts/ContextProvider.jsx";
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import axiosClient from "../../axios.js";
 
 const navigation = [
     { name: 'Dashboard', to: '/' },
@@ -18,11 +19,16 @@ function classNames(...classes) {
 }
 
 export default function AdminLayout() {
-    const { user, token } = useStateContext()
+    const { user, setUser, token, setToken } = useStateContext()
 
     const onSignOut = (ev) => {
         ev.preventDefault()
-        console.log("logout clicked")
+
+        axiosClient.post('/logout')
+            .then(() => {
+                setUser({})
+                setToken(null)
+            })
     }
 
     if (!token) {
