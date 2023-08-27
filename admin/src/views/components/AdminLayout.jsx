@@ -4,6 +4,7 @@ import {Fragment, useEffect} from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import axiosClient from "../../axios.js";
+import Toast from "./core/Toast.jsx";
 
 const navigation = [
     { name: 'Dashboard', to: '/' },
@@ -112,7 +113,7 @@ export default function AdminLayout() {
                                                                     <NavLink
                                                                         to={item.to}
                                                                         className={({ isActive }) => classNames(
-                                                                            isActive ? 'bg-gray-800 text-gray-50' : 'hover:bg-gray-500 hover:text-white',
+                                                                            isActive ? 'bg-gray-800 text-white' : 'hover:bg-gray-500 hover:text-white',
                                                                             'block px-4 py-2 text-sm text-gray-700'
                                                                         )}
                                                                     >
@@ -213,6 +214,8 @@ export default function AdminLayout() {
                 </Disclosure>
 
                 <Outlet />
+
+                <Toast />
             </div>
         </>
     )

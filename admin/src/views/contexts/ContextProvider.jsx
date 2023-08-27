@@ -3,6 +3,10 @@ import {createContext, useContext, useState} from "react";
 const StateContext =  createContext({
     user: null,
     token: null,
+    toast: {
+        message: null,
+        show: false
+    },
     setUser: () => {},
     setToken: () => {},
 })
@@ -10,6 +14,15 @@ const StateContext =  createContext({
 export const ContextProvider = ({children}) => {
     const [ user, setUser ] = useState({})
     const [ token, _setToken ] = useState(localStorage.getItem('ACCESS_TOKEN'))
+
+    const [ toast, setToast ] = useState({message: '', show: false})
+
+    const showToast = (message) => {
+        setToast({message, show: true})
+        setTimeout(() =>{
+            setToast({message: '', show: false})
+        }, 5000)
+    }
 
     const setToken = (token) => {
         _setToken(token)
@@ -25,7 +38,9 @@ export const ContextProvider = ({children}) => {
             user,
             token,
             setUser,
-            setToken
+            setToken,
+            toast,
+            showToast
         }}>
             {children}
         </StateContext.Provider>
