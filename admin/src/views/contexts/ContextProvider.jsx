@@ -5,6 +5,7 @@ const StateContext =  createContext({
     token: null,
     toast: {
         message: null,
+        variant: null,
         show: false
     },
     setUser: () => {},
@@ -17,10 +18,10 @@ export const ContextProvider = ({children}) => {
 
     const [ toast, setToast ] = useState({message: '', show: false})
 
-    const showToast = (message) => {
-        setToast({message, show: true})
+    const showToast = (message, variant) => {
+        setToast({message, variant, show: true})
         setTimeout(() =>{
-            setToast({message: '', show: false})
+            setToast({message: '', variant: '', show: false})
         }, 5000)
     }
 
