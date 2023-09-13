@@ -10,21 +10,23 @@ export default function UserList({user}) {
                     </div>
                 </div>
                 <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    {user.email_verified_at !== null ? (
-                        <div className="mt-1 flex items-center gap-x-1.5">
-                            <div className="flex-none rounded-full bg-red-500/20 p-1">
-                                <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                            </div>
-                            <p className="text-xs leading-5 text-gray-500">Email Not Verified</p>
-                        </div>
-                    ) : (
+                    {user.email_verified_at ? (
                         <>
-                            <p className="text-sm leading-6 text-gray-900">{user.email_verified_at}</p>
+                            <p className="text-sm leading-6 text-gray-900">Email Verified At: {user.email_verified_at}</p>
                             <div className="mt-1 flex items-center gap-x-1.5">
                                 <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                                     <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                                 </div>
                                 <p className="text-xs leading-5 text-gray-500">Email Verified</p>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="mt-1 flex items-center gap-x-1.5">
+                                <div className="flex-none rounded-full bg-red-500/20 p-1">
+                                    <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                                </div>
+                                <p className="text-xs leading-5 text-gray-500">Email Not Verified</p>
                             </div>
                         </>
                     )}
