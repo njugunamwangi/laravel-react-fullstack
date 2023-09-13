@@ -1,5 +1,6 @@
 import {Navigate, Outlet} from "react-router-dom";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
+import Toast from "./core/Toast.jsx";
 
 export default function AuthLayout() {
     const { token } = useStateContext()
@@ -19,6 +20,8 @@ export default function AuthLayout() {
                 </div>
 
                 <Outlet />
+
+                <Toast />
             </div>
         </>
     )

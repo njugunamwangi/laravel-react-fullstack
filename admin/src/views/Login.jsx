@@ -4,6 +4,8 @@ import {useRef} from "react";
 import axiosClient from "../axios.js";
 
 export default function Login() {
+    const { showToast } = useStateContext({})
+
     const { setUser, setToken } = useStateContext()
 
     const emailRef = useRef()
@@ -23,10 +25,8 @@ export default function Login() {
                 setToken(data.token)
             })
             .catch((error) => {
-                const response = error.response
-
-                if (response && response.status === 422) {
-                    response.data.errors
+                if (error.response.status === 422) {
+                    showToast(error.response.data.error, 'error')
                 }
             })
     }
