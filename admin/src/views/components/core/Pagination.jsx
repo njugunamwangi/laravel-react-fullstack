@@ -47,7 +47,7 @@ export default function Pagination({ meta, onPageClick }) {
                                 key={ind}
                                 aria-current="page"
                                 className={
-                                    "relative z-10 inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 hover:bg-gray-50 "
+                                    "relative z-10 inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 hover:bg-indigo-600 hover:text-white"
                                     + (ind === 0 ? 'rounded-l-md ' : '')
                                     + (ind === meta.links.length - 1 ? 'rounded-r-md ' : '')
                                     + (link.active ? 'border-indigo-500 bg-indigo-600 text-white hover:bg-indigo-400' : 'hover:bg-indigo-500 hover:text-white')
