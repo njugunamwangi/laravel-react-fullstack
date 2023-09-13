@@ -8,4 +8,5 @@ Built with:
 - [Tailwind UI Components](https://tailwindui.com)
 - [Hero Icons](https://heroicons.com/)
 - [Headless React](https://headlessui.com/)
+- [Breeze Scaffolding](https://laravel.com/docs/10.x/starter-kits#laravel-breeze)
 
