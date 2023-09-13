@@ -8,6 +8,7 @@ import AdminLayout from "./views/components/AdminLayout.jsx";
 import Dashboard from "./views/Dashboard.jsx";
 import Profile from "./views/user/Profile.jsx";
 import Settings from "./views/user/Settings.jsx";
+import UserForm from "./views/forms/UserForm.jsx";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: '/users',
                 element: <Users />
+            },
+            {
+                path: '/users/add',
+                element: <UserForm />
             },
             {
                 path: '/profile',
