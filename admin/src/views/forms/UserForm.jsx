@@ -115,11 +115,14 @@ export default function UserForm() {
                                         }`}
                                     />
                                 </div>
-                                    {error.password.map((errorMessage, index) => (
+                                    {error.password && error.password.length > 1 && error.password.map((errorMessage, index) => (
                                         <small key={`error-${index}`} className="text-sm text-red-500 block">
                                             {index + 1}. {errorMessage}
                                         </small>
                                     ))}
+                                    {error.password && (<small className="text-sm text-red-500">
+                                        {error.password}
+                                    </small>)}
                             </div>
                             {/* Password */}
 
