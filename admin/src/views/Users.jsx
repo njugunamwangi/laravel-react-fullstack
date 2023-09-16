@@ -28,13 +28,13 @@ export default function Users() {
     }
 
     const deleteUser = (user) => {
-        if (!window.confirm("Are you sure you want to delete this user?")) return;
-
-        axiosClient.delete(`/users/${user.id}`)
-            .then(() => {
-                showToast('User deleted successfully', 'warning')
-                getUsers()
-            })
+        if (window.confirm("Are you sure you want to delete this user?")) {
+            axiosClient.delete(`/users/${user.id}`)
+                .then(() => {
+                    showToast('User deleted successfully', 'warning')
+                    getUsers()
+                })
+        }
     }
 
     const onPageClick = (link) => {
