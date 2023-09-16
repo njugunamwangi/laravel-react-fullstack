@@ -120,7 +120,7 @@ export default function UserForm() {
                                             {index + 1}. {errorMessage}
                                         </small>
                                     ))}
-                                    {error.password && (<small className="text-sm text-red-500">
+                                    {error.password && error.password.length === 1 && (<small className="text-sm text-red-500">
                                         {error.password}
                                     </small>)}
                             </div>
