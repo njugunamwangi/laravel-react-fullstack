@@ -1,37 +1,25 @@
 export default function UserList({user}) {
     return (
         <>
-            <li className="flex justify-between gap-x-6 py-5">
-                <div className="flex min-w-0 gap-x-4">
-                    <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={user.imageUrl} alt="" />
-                    <div className="min-w-0 flex-auto">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">{user.name}</p>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">{user.email}</p>
-                    </div>
-                </div>
-                <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    {user.email_verified_at ? (
-                        <>
-                            <p className="text-sm leading-6 text-gray-900">Email Verified At: {user.email_verified_at}</p>
-                            <div className="mt-1 flex items-center gap-x-1.5">
-                                <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                </div>
-                                <p className="text-xs leading-5 text-gray-500">Email Verified</p>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="mt-1 flex items-center gap-x-1.5">
-                                <div className="flex-none rounded-full bg-red-500/20 p-1">
-                                    <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                                </div>
-                                <p className="text-xs leading-5 text-gray-500">Email Not Verified</p>
-                            </div>
-                        </>
-                    )}
-                </div>
-            </li>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+                <th scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                    {user.name}
+                </th>
+                <td className="px-6 py-4">
+                    {user.email}
+                </td>
+                <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                    {user.email_verified_at ? user.email_verified_at : 'Email Not verified'}
+                </td>
+                <td className="px-6 py-4">
+                    {user.created_at}
+                </td>
+                <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">Edit</a>
+                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline ">Delete</a>
+                </td>
+            </tr>
         </>
     )
 }

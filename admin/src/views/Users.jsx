@@ -50,11 +50,34 @@ export default function Users() {
 
                 {!loading && (
                     <>
-                        <ul role="list" className="divide-y divide-gray-100">
-                            {users.map((user) => (
-                                <UserList user={user} key={user.id} />
-                            ))}
-                        </ul>
+                        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                        Name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Email
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                        Email Verified at
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Created at
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                                        Actions
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {users.map((user) => (
+                                        <UserList user={user} key={user.id} />
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                         <Pagination meta={meta} onPageClick={onPageClick} />
                     </>
 
