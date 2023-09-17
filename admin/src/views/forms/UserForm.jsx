@@ -1,32 +1,43 @@
 import AdminComponent from "../components/AdminComponent.jsx";
-import {useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import TButton from "../components/core/TButton.jsx";
 import axiosClient from "../../axios.js";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Loading from "../components/core/Loading.jsx";
 
 export default function UserForm() {
-    const nameRef = useRef()
-    const emailRef = useRef()
-    const passwordRef = useRef()
-    const passwordConfirmationRef = useRef()
+    const [ user, setUser ] = useState({
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
+    })
     const navigate = useNavigate()
 
     const [ error, setError ] = useState('')
     const [ loading, setLoading ] = useState(false)
 
     const { showToast } = useStateContext()
+    const { id } = useParams()
+
+    useEffect(() => {
+        if (id) {
+            setLoading(true)
+            axiosClient.get(`/users/${id}`)
+                .then(({ data }) => {
+                    setLoading(false)
+                    setUser(data.data)
+                })
+        }
+    }, [id])
 
     const onSubmit = (ev) => {
         ev.preventDefault()
 
-        const payload = {
-            name: nameRef.current.value,
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-            password_confirmation: passwordConfirmationRef.current.value,
-        }
+        const payload = {...user}
+
+        payload.password_confirmation = payload.passwordConfirmation
 
         setLoading(true)
         axiosClient.post('/users', payload)
@@ -45,7 +56,7 @@ export default function UserForm() {
     }
 
     return (
-        <AdminComponent title="Add User">
+        <AdminComponent title={id ? 'Update User' : 'Add User'}>
             {loading && (
                 <Loading />
             )}
@@ -64,7 +75,10 @@ export default function UserForm() {
                                         name="name"
                                         id="name"
                                         placeholder="Joe Shields"
-                                        ref={nameRef}
+                                        value={user.name}
+                                        onChange={(ev) =>
+                                            setUser({...user, name: ev.target.value})
+                                        }
                                         className={`block w-full rounded-md py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6 ${
                                             error.name ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
                                         }`}
@@ -87,7 +101,10 @@ export default function UserForm() {
                                         name="email"
                                         id="email"
                                         placeholder="joe@shields.com"
-                                        ref={emailRef}
+                                        value={user.email}
+                                        onChange={(ev) =>
+                                            setUser({...user, email: ev.target.value})
+                                        }
                                         className={`block w-full rounded-md py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6 ${
                                             error.email ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
                                         }`}
@@ -99,51 +116,61 @@ export default function UserForm() {
                             </div>
                             {/* Email */}
 
-                            {/* Password */}
-                            <div className="col-span-full">
-                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                                    Password
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        id="password"
-                                        ref={passwordRef}
-                                        className={`block w-full rounded-md py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6 ${
-                                            error.password ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-                                        }`}
-                                    />
-                                </div>
-                                    {error.password && error.password.length > 1 && error.password.map((errorMessage, index) => (
-                                        <small key={`error-${index}`} className="text-sm text-red-500 block">
-                                            {index + 1}. {errorMessage}
-                                        </small>
-                                    ))}
-                                    {error.password && error.password.length === 1 && (<small className="text-sm text-red-500">
-                                        {error.password}
-                                    </small>)}
-                            </div>
-                            {/* Password */}
+                            {!id && (
+                                <>
+                                    {/* Password */}
+                                    <div className="col-span-full">
+                                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Password
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="password"
+                                                name="password"
+                                                id="password"
+                                                value={user.password}
+                                                onChange={(ev) =>
+                                                    setUser({...user, password: ev.target.value})
+                                                }
+                                                className={`block w-full rounded-md py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6 ${
+                                                    error.password ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+                                                }`}
+                                            />
+                                        </div>
+                                        {error.password && error.password.length > 1 && error.password.map((errorMessage, index) => (
+                                            <small key={`error-${index}`} className="text-sm text-red-500 block">
+                                                {index + 1}. {errorMessage}
+                                            </small>
+                                        ))}
+                                        {error.password && error.password.length === 1 && (<small className="text-sm text-red-500">
+                                            {error.password}
+                                        </small>)}
+                                    </div>
+                                    {/* Password */}
 
-                            {/* Confirm Password */}
-                            <div className="col-span-full">
-                                <label htmlFor="passwordConfirmation" className="block text-sm font-medium leading-6 text-gray-900">
-                                    Confirm Password
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        type="password"
-                                        name="passwordConfirmation"
-                                        id="passwordConfirmation"
-                                        ref={passwordConfirmationRef}
-                                        className={`block w-full rounded-md py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6 ${
-                                            error.passwordConfirmation ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
-                                        }`}
-                                    />
-                                </div>
-                            </div>
-                            {/* Confirm Password */}
+                                    {/* Confirm Password */}
+                                    <div className="col-span-full">
+                                        <label htmlFor="passwordConfirmation" className="block text-sm font-medium leading-6 text-gray-900">
+                                            Confirm Password
+                                        </label>
+                                        <div className="mt-2">
+                                            <input
+                                                type="password"
+                                                name="passwordConfirmation"
+                                                id="passwordConfirmation"
+                                                value={user.passwordConfirmation}
+                                                onChange={(ev) =>
+                                                    setUser({...user, passwordConfirmation: ev.target.value})
+                                                }
+                                                className={`block w-full rounded-md py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6 ${
+                                                    error.passwordConfirmation ? 'border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600'
+                                                }`}
+                                            />
+                                        </div>
+                                    </div>
+                                    {/* Confirm Password */}
+                                </>
+                            )}
 
                             <div className="bg-gray-50 py-3 text-right sm:px-6">
                                 <TButton>
