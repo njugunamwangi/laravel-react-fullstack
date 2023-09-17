@@ -29,7 +29,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/users/add',
-                element: <UserForm />
+                element: <UserForm key="userCreate" />
+            },
+            {
+                path: '/users/:id',
+                element: <UserForm key="userUpdate" />
             },
             {
                 path: '/profile',
