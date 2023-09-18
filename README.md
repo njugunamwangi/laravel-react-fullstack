@@ -10,3 +10,15 @@ Built with:
 - [Headless React](https://headlessui.com/)
 - [Breeze Scaffolding](https://laravel.com/docs/10.x/starter-kits#laravel-breeze)
 
+## Functionality
+- Sign Up
+- Sign In
+- Users CRUD
+
+## Application
+- Pagination
+![users.png](public%2Fusers.png)
+- Toast message for success, warning and error
+
+## Installation
+
