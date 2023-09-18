@@ -98,8 +98,19 @@ export default function Users() {
                                                 {user.created_at}
                                             </td>
                                             <td className="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                                <Link to={`/users/${user.id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">Edit</Link>
-                                                <a href="#" onClick={ev => deleteUser(user)} className="font-medium text-red-600 dark:text-red-500 hover:underline ">Delete</a>
+                                                <Link
+                                                    to={`/users/${user.id}`}
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <a
+                                                    href="#"
+                                                    onClick={ev => deleteUser(user)}
+                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                                                >
+                                                    Delete
+                                                </a>
                                             </td>
                                         </tr>
                                     ))}

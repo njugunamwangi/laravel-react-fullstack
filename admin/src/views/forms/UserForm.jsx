@@ -1,5 +1,5 @@
 import AdminComponent from "../components/AdminComponent.jsx";
-import {useCallback, useEffect, useRef, useState} from "react";
+import { useEffect, useState} from "react";
 import TButton from "../components/core/TButton.jsx";
 import axiosClient from "../../axios.js";
 import {useStateContext} from "../contexts/ContextProvider.jsx";
@@ -40,19 +40,32 @@ export default function UserForm() {
         payload.password_confirmation = payload.passwordConfirmation
 
         setLoading(true)
-        axiosClient.post('/users', payload)
-            .then(() => {
-                navigate('/users')
-                setLoading(false)
-                showToast('User created successfully', 'success')
-            })
-            .catch((err) => {
-                if (err && err.response) {
-                    setLoading(false)
-                    showToast(err.response.data.message, 'error')
-                    setError(err.response.data.errors)
-                }
-            })
+
+        let res = null
+
+        if (id) {
+            res = axiosClient.put(`/users/${id}`, payload)
+        } else {
+            res = axiosClient.post('/users', payload)
+        }
+            res
+                .then(() => {
+                    navigate('/users')
+                    if (id) {
+                        setLoading(false)
+                        showToast('User updated successfully', 'info')
+                    } else {
+                        setLoading(false)
+                        showToast('User created successfully', 'success')
+                    }
+                })
+                .catch((err) => {
+                    if (err && err.response) {
+                        setLoading(false)
+                        showToast(err.response.data.message, 'error')
+                        setError(err.response.data.errors)
+                    }
+                })
     }
 
     return (
@@ -174,7 +187,7 @@ export default function UserForm() {
 
                             <div className="bg-gray-50 py-3 text-right sm:px-6">
                                 <TButton>
-                                    Save User
+                                    {id ? 'Update' : 'Save'} User
                                 </TButton>
                             </div>
                         </div>
